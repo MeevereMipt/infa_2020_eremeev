@@ -51,9 +51,9 @@ while not(finished):
         if event.type == pg.QUIT:
             finished = True
 
-        if event.type == pg.MOUSEBUTTONDOWN:
-            print(event.pos)
-            drawSurface(screen, catSurface(), event.pos )
+        # if event.type == pg.MOUSEBUTTONDOWN:
+        #     print(event.pos)
+        #     drawSurface(screen, catSurface(), event.pos )
 
     pg.display.update()
 
