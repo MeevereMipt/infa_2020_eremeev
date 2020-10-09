@@ -1,25 +1,28 @@
 import numpy as np
 import turtle as t
 
-def Vector(x,y):
-    return np.array([[float(x),float(y)]])
+
+def Vector(x, y):
+    return np.array([[float(x), float(y)]])
+
 
 def mag(vector):
     return np.sqrt(np.matmul(vector, np.transpose(vector))[0][0])
 
+
 dt = 0.3
 BORDERS = t.screensize()
 
-E_X = Vector(1,0)
-E_Y = Vector(0,1)
+E_X = Vector(1, 0)
+E_Y = Vector(0, 1)
+
 
 class Particle:
 
-
     def __init__(self):
-        self.a = Vector(0,0)
-        self.v = Vector(0,0)
-        self.r = Vector(0,0)
+        self.a = Vector(0, 0)
+        self.v = Vector(0, 0)
+        self.r = Vector(0, 0)
 
         self.forces = [Force()]
 
@@ -28,7 +31,7 @@ class Particle:
 
     def update(self):
 
-        if( self.r[0][0] <= -BORDERS[0] ):
+        if (self.r[0][0] <= -BORDERS[0]):
             self.v[0][0] = abs(self.v[0][0])
         if (self.r[0][0] >= BORDERS[0]):
             self.v[0][0] = -abs(self.v[0][0])
@@ -43,28 +46,25 @@ class Particle:
 
         self.a = sum(self.forces).force
 
-        self.t.goto((self.r[0][0],self.r[0][1]))
+        self.t.goto((self.r[0][0], self.r[0][1]))
+
 
 class Force:
 
-
     def __init__(self):
-        self.force = Vector(0,0)
+        self.force = Vector(0, 0)
 
     def __add__(self, other):
-        f = Force()
-        f.force = self.force + other.force
-        return f
+        class Test(Force):
+            def update(self):
+                self.force = self.force + other.force
+        return Test
 
-    def __mul__(self, other : int):
-        f = self.__class__()
-
-        def update(obj):
-
-            self.force = other * self.force
-
-        f.update = test
-
+    def __mul__(self, other: int):
+        class Test(Force):
+            def update(self):
+                self.force = other * self.force
+        return Test
 
     def update(self):
         pass
@@ -72,24 +72,22 @@ class Force:
 
 class Gravitation(Force):
 
-
-    def __init__(self, p1 : Particle, p2 : Particle):
+    def __init__(self, p1: Particle, p2: Particle):
         Force.__init__(self)
         self.G = 1
         self.p1 = p1
         self.p2 = p2
 
-
     def update(self):
         dr = self.p1.r - self.p2.r
-        self.force = -self.G * (dr)/mag(dr)**3
+        self.force = -self.G * dr / mag(dr) ** 3
 
-p1,p2 = Particle(), Particle()
-p1.r = Vector(100,0)
-p2.r = Vector(-100,0)
 
-f = Gravitation(p1,p2)
+p1, p2 = Particle(), Particle()
+p1.r = Vector(100, 0)
+p2.r = Vector(-100, 0)
+
+f = Gravitation(p1, p2)
 p1.forces.append(f)
-
 
 t.exitonclick()

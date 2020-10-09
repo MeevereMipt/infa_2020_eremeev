@@ -3,7 +3,7 @@ import pygame as pg
 
 from random import randint
 
-from labs.day5.particles import Particle, vector, magnitude
+from labs.day6.particles import Particle, vector, magnitude
 
 
 class Ball(Particle):
