@@ -15,7 +15,7 @@ class Ball(Particle):
         self.color = color
 
     def draw(self, surface: pg.Surface):
-        pg.draw.circle(surface, self.color, self.r, self.radius)
+        pg.draw.circle(surface, self.color, (int(self.r[0][0]),int(self.r[0][1])), self.radius)
 
     def isInside(self, point):
         if magnitude(point - self.r) <= self.radius:
@@ -33,15 +33,36 @@ BLACK = "#000000"
 COLORS = [RED, BLUE, YELLOW, GREEN, MAGENTA, CYAN]
 
 
-def newBall() -> Ball:
-    return Ball(vector(randint(100, 1100), randint(100, 900)),
+def newBall(screen: pg.Surface) -> Ball:
+    return Ball(vector(randint(0, screen.get_width()), randint(0, screen.get_height())),
+                randint(10, 50),
+                pg.Color(COLORS[randint(0, 5)]),
+                vector(randint(-20, 20), randint(-20, 20)))
+
+
+def newBallAt(position) -> Ball:
+    return Ball(vector(position[0], position[1]),
                 randint(10, 100),
-                pg.Color(COLORS[randint(0, 5)]))
+                pg.Color(COLORS[randint(0, 5)]),
+                vector(randint(-10, 10), randint(-10, 10)))
 
 
 if __name__ == "__main__":
     balls = [newBall() for i in range(10)]
 
-    for ball in balls:
-        ball.draw()
+    pg.init()
+    screen = pg.display.set_mode((1200, 1000))
 
+    for ball in balls:
+        ball.draw(screen)
+
+    pg.display.update()
+
+    finished = False
+    while not finished:
+        for event in pg.event.get():
+
+            if event.type == pg.QUIT:
+                finished = True
+
+    pg.quit()
