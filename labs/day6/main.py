@@ -1,7 +1,7 @@
-import labs.day6.app as capp
-import labs.day6.balls as balls
+import labs.day6.app.app as capp
+import labs.day6.entity.balls as balls
 
-from labs.day6.balls import COLORS, BLACK, RED, GREEN, BLUE
+from labs.day6.entity.balls import BLACK
 
 import pygame as pg
 
@@ -26,6 +26,11 @@ class App(capp.CApp):
         print(self.balls)
 
     def on_mbutton_down(self, event):
+        """
+        Method of handling mouse-down event
+        :param event:
+        :return:
+        """
         ball_to_delete = None
         for ball in self.balls:
             if ball.isInside(event.pos):

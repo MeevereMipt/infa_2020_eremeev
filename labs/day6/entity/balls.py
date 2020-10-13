@@ -1,27 +1,11 @@
+#Not mine
 import numpy as np
 import pygame as pg
-
 from random import randint
 
+#My "bicycles"
 from labs.day6.particles import Particle, vector, magnitude
-
-
-class Ball(Particle):
-
-    def __init__(self, r=vector(0, 0), radius=1, color=pg.Color("#FFFFFF"), v=vector(0, 0)):
-        Particle.__init__(self, r, v)
-
-        self.radius = radius
-        self.color = color
-
-    def draw(self, surface: pg.Surface):
-        pg.draw.circle(surface, self.color, (int(self.r[0][0]),int(self.r[0][1])), self.radius)
-
-    def isInside(self, point):
-        if magnitude(point - self.r) <= self.radius:
-            return True
-        return False
-
+from labs.day6.entity.entity import Entity
 
 RED = "#FF0000"
 BLUE = "#0000FF"
@@ -33,6 +17,26 @@ BLACK = "#000000"
 COLORS = [RED, BLUE, YELLOW, GREEN, MAGENTA, CYAN]
 
 
+class Ball(Particle, Entity):
+
+    def __init__(self, r=vector(0, 0), radius=1, color=pg.Color("#FFFFFF"), v=vector(0, 0)):
+        Particle.__init__(self, r, v)
+        Entity.__init__(self)
+
+        self.radius = radius
+        self.color = color
+
+
+    def draw(self, surface: pg.Surface):
+        pg.draw.circle(surface, self.color, (int(self.r[0]), int(self.r[1])), self.radius)
+
+    def isInside(self, point):
+        if magnitude(point - self.r) <= self.radius:
+            return True
+        return False
+
+
+# Функции для удобства
 def newBall(screen: pg.Surface) -> Ball:
     return Ball(vector(randint(0, screen.get_width()), randint(0, screen.get_height())),
                 randint(10, 50),
@@ -48,10 +52,11 @@ def newBallAt(position) -> Ball:
 
 
 if __name__ == "__main__":
-    balls = [newBall() for i in range(10)]
 
     pg.init()
     screen = pg.display.set_mode((1200, 1000))
+
+    balls = [newBall(screen) for i in range(10)]
 
     for ball in balls:
         ball.draw(screen)

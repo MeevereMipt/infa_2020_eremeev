@@ -2,11 +2,11 @@ import numpy as np
 
 
 def vector(x, y):
-    return np.array([[float(x), float(y)]])
+    return np.array([float(x), float(y)])
 
 
 def magnitude(v):
-    return np.sqrt(np.matmul(v, np.transpose(v))[0][0])
+    return np.sqrt(np.dot(v, v))
 
 
 dt = 0.3
@@ -26,15 +26,15 @@ class Particle:
         self.forces = [Force()]
 
     def update(self):
-        if self.r[0][0] <= -BORDERS[0][0]:
-            self.v[0][0] = abs(self.v[0][0])
-        if self.r[0][0] >= BORDERS[1][0]:
-            self.v[0][0] = -abs(self.v[0][0])
+        if self.r[0] <= -BORDERS[0][0]:
+            self.v[0] = abs(self.v[0])
+        if self.r[0] >= BORDERS[1][0]:
+            self.v[0] = -abs(self.v[0])
 
-        if self.r[0][1] <= -BORDERS[0][1]:
-            self.v[0][1] = abs(self.v[0][1])
-        if self.r[0][1] >= BORDERS[1][1]:
-            self.v[0][1] = -abs(self.v[0][1])
+        if self.r[1] <= -BORDERS[0][1]:
+            self.v[1] = abs(self.v[1])
+        if self.r[1] >= BORDERS[1][1]:
+            self.v[1] = -abs(self.v[1])
 
         self.r += self.v * dt + self.a * dt * dt / 2
         self.v += self.a * dt

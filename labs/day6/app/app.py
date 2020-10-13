@@ -1,5 +1,5 @@
 import pygame
-import labs.day6.event as cevent
+import labs.day6.app.event as cevent
 
 
 class CApp(cevent.CEvent):
