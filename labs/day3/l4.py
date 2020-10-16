@@ -74,7 +74,7 @@ class Gravitation(Force):
 
     def __init__(self, p1: Particle, p2: Particle):
         Force.__init__(self)
-        self.G = 1
+        self.G = 10
         self.p1 = p1
         self.p2 = p2
 

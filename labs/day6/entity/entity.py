@@ -21,27 +21,27 @@ class Entity():
             array.remove(self)
         self.arrays = []
 
-    """
-        Draw entity on surface
-    """
     def draw(self, screen : pg.Surface):
+        """
+            Draw entity on surface
+        """
         pass
 
-    """
-        Update object for dt
-    """
     def update(self, dt):
+        """
+            Update object for dt
+        """
         pass
 
-    """
-        Action that occurs on click
-    """
     def on_click(self, event):
+        """
+            Action that occurs on click
+        """
         pass
 
-    """
-        Tests if point is inside entity
-    """
     def isInside(self, point)->bool:
+        """
+            Tests if point is inside entity
+        """
         pass
 

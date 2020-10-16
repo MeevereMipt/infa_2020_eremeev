@@ -52,14 +52,31 @@ class Force:
             def update(self):
                 self.force = self.force + other.force
 
-        return Test()
+        force = Test()
+        force.update()
+        return force
 
     def __mul__(self, other: int):
         class Test(Force):
             def update(self):
                 self.force = other * self.force
 
-        return Test()
+        force = Test()
+        force.update()
+        return force
 
     def update(self):
         pass
+
+
+class Gravitation(Force):
+
+    def __init__(self, p1: Particle, p2: Particle):
+        Force.__init__(self)
+        self.G = 100
+        self.p1 = p1
+        self.p2 = p2
+
+    def update(self):
+        dr = self.p1.r - self.p2.r
+        self.force = -self.G * dr / magnitude(dr) ** 3

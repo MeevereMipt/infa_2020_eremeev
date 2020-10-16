@@ -1,13 +1,19 @@
 import labs.day6.app.app as capp
 import labs.day6.entity.balls as balls
+import labs.day6.entity.grub as grub
+import labs.day6.entity.badball as badball
 
 from labs.day6.entity.balls import BLACK
 
 import pygame as pg
 
-WIDTH = 800
-HEIGHT = 800
+WIDTH = 900
+HEIGHT = 700
 
+N = 10
+
+STATE_GAME = 0
+STATE_END  = 1
 
 class App(capp.CApp):
 
@@ -15,13 +21,18 @@ class App(capp.CApp):
         capp.CApp.__init__(self)
 
         pg.init()
+
+        self.lastClickTime = 0
         self.screen = pg.display.set_mode((WIDTH, HEIGHT))
         self.entities = []
         self.score = 0
 
+        self.state = STATE_GAME
+
     def on_init(self):
         capp.CApp.on_init(self)
-        [balls.newBall(self.screen).appendTo(self.entities) for i in range(100)]
+        [balls.newBall(self.screen).appendTo(self.entities) for i in range(N)]
+        [grub.newGrub(self.screen).appendTo(self.entities) for i in range(N)]
 
     def on_mbutton_down(self, event):
         """
@@ -29,6 +40,8 @@ class App(capp.CApp):
         :param event:
         :return:
         """
+        self.lastClickTime = pg.time.get_ticks()
+
         for entity in self.entities:
             if entity.isInside(event.pos):
                 self.score += int(entity.score)
@@ -39,21 +52,35 @@ class App(capp.CApp):
 
     def on_render(self):
         self.screen.fill(pg.Color(BLACK))
+        if self.state == STATE_GAME:
+            #рисуем шарики
+            for entity in self.entities:
+                entity.draw(self.screen)
 
-        #рисуем шарики
-        for entity in self.entities:
-            entity.draw(self.screen)
-
-        #рисуем счётчик очков
-        font = pg.font.SysFont('comicsansms', 36)
-        text = font.render("Scores : "+str(self.score), 1, pg.Color("#FFFFFF"))
-        self.screen.blit(text, (10, 10))
-
+            #рисуем счётчик очков
+            font = pg.font.SysFont('comicsansms', 36)
+            text = font.render("Scores : "+str(self.score), 1, pg.Color("#FFFFFF"))
+            self.screen.blit(text, (10, 10))
+        elif self.state == STATE_END:
+            font = pg.font.SysFont('comicsansms', 72)
+            text = font.render("Congratulations! Your score is :" + str(self.score), 1, pg.Color("#FFFFFF"))
+            self.screen.blit(text, (10 ,self.screen.get_height()//2 ))
         pg.display.update()
 
     def on_loop(self):
-        for ball in self.entities:
-            ball.update()
+        if self.state == STATE_GAME:
+            for entity in self.entities:
+                entity.update()
+
+            if (pg.time.get_ticks()-self.lastClickTime) % 10000 > 5000:
+                for entity in self.entities:
+                    if entity.__class__ != badball.BadBall:
+                        return
+            if len(self.entities) > 0:
+                self.state = STATE_END
+        elif self.state == STATE_END:
+            pass
+
 
 
 if __name__ == "__main__":
