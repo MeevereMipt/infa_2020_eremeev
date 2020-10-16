@@ -16,14 +16,12 @@ class App(capp.CApp):
 
         pg.init()
         self.screen = pg.display.set_mode((WIDTH, HEIGHT))
-        self.balls = []
+        self.entities = []
         self.score = 0
 
     def on_init(self):
         capp.CApp.on_init(self)
-        self.balls = [balls.newBall(self.screen) for i in range(50)]
-
-        print(self.balls)
+        [balls.newBall(self.screen).appendTo(self.entities) for i in range(100)]
 
     def on_mbutton_down(self, event):
         """
@@ -31,24 +29,20 @@ class App(capp.CApp):
         :param event:
         :return:
         """
-        ball_to_delete = None
-        for ball in self.balls:
-            if ball.isInside(event.pos):
-                ball_to_delete = ball
-                break
+        for entity in self.entities:
+            if entity.isInside(event.pos):
+                self.score += int(entity.score)
+                entity.on_click(event)
+                return
 
-        if ball_to_delete is None:
-            self.score -= 50
-            return
-        self.score += int(1000/ball_to_delete.radius)
-        self.balls.remove(ball_to_delete)
+        self.score -= 50
 
     def on_render(self):
         self.screen.fill(pg.Color(BLACK))
 
         #рисуем шарики
-        for ball in self.balls:
-            ball.draw(self.screen)
+        for entity in self.entities:
+            entity.draw(self.screen)
 
         #рисуем счётчик очков
         font = pg.font.SysFont('comicsansms', 36)
@@ -58,7 +52,7 @@ class App(capp.CApp):
         pg.display.update()
 
     def on_loop(self):
-        for ball in self.balls:
+        for ball in self.entities:
             ball.update()
 
 

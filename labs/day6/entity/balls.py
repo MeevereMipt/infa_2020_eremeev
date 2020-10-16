@@ -21,11 +21,10 @@ class Ball(Particle, Entity):
 
     def __init__(self, r=vector(0, 0), radius=1, color=pg.Color("#FFFFFF"), v=vector(0, 0)):
         Particle.__init__(self, r, v)
-        Entity.__init__(self)
+        Entity.__init__(self, 1000 / radius)
 
         self.radius = radius
         self.color = color
-
 
     def draw(self, surface: pg.Surface):
         pg.draw.circle(surface, self.color, (int(self.r[0]), int(self.r[1])), self.radius)
@@ -34,6 +33,9 @@ class Ball(Particle, Entity):
         if magnitude(point - self.r) <= self.radius:
             return True
         return False
+
+    def on_click(self, event):
+        self.removeFromAll()
 
 
 # Функции для удобства
