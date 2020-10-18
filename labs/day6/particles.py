@@ -10,13 +10,14 @@ def magnitude(v):
 
 
 dt = 0.3
-BORDERS = ((0, 0), (800, 800))
 
 E_X = vector(1, 0)
 E_Y = vector(0, 1)
 
 
 class Particle:
+
+    BORDERS = ((-50, -50), (800, 600))
 
     def __init__(self, r=vector(0, 0), v=vector(0, 0)):
         self.a = vector(0, 0)
@@ -26,14 +27,14 @@ class Particle:
         self.forces = [Force()]
 
     def update(self):
-        if self.r[0] <= -BORDERS[0][0]:
+        if self.r[0] <= -self.BORDERS[0][0]:
             self.v[0] = abs(self.v[0])
-        if self.r[0] >= BORDERS[1][0]:
+        if self.r[0] >= self.BORDERS[1][0]:
             self.v[0] = -abs(self.v[0])
 
-        if self.r[1] <= -BORDERS[0][1]:
+        if self.r[1] <= -self.BORDERS[0][1]:
             self.v[1] = abs(self.v[1])
-        if self.r[1] >= BORDERS[1][1]:
+        if self.r[1] >= self.BORDERS[1][1]:
             self.v[1] = -abs(self.v[1])
 
         self.r += self.v * dt + self.a * dt * dt / 2

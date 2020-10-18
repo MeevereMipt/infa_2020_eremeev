@@ -33,8 +33,8 @@ class App(capp.CApp):
     def on_init(self):
         capp.CApp.on_init(self)
 
-        pg.mixer.music.load(os.path.join("music","wog_music.mp3"))
-        pg.mixer.music.play()
+        pg.mixer.music.load(os.path.join("music","music","temp_DWtD2.ogg"))
+        pg.mixer.music.play(10)
 
         [balls.newBall(self.screen).appendTo(self.entities) for i in range(N)]
         [grub.newGrub(self.screen).appendTo(self.entities) for i in range(N)]
@@ -64,7 +64,7 @@ class App(capp.CApp):
 
             #рисуем счётчик очков
             font = pg.font.SysFont('comicsansms', 36)
-            text = font.render("Scores : "+str(self.score), 1, pg.Color("#FFFFFF"))
+            text = font.render("Score : "+str(self.score), 1, pg.Color("#FFFFFF"))
             self.screen.blit(text, (10, 10))
         elif self.state == STATE_END:
 
@@ -89,7 +89,7 @@ class App(capp.CApp):
                     if entity.__class__ != badball.BadBall:
                         return
                 self.state = STATE_END
-
+                pg.mixer.Sound(os.path.join("music","sounds","cheer2.ogg")).play()
         elif self.state == STATE_END:
             pass
 
