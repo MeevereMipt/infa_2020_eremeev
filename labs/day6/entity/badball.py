@@ -23,3 +23,6 @@ class BadBall( Ball ):
         Ball.__init__(self, r, radius, color, v)
         self.score = int(-1000/radius)
 
+    def draw(self, surface):
+        Ball.draw(self, surface)
+

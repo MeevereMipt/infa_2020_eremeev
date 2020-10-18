@@ -6,6 +6,7 @@ import labs.day6.entity.badball as badball
 from labs.day6.entity.balls import BLACK
 
 import pygame as pg
+import os
 
 WIDTH = 900
 HEIGHT = 700
@@ -31,6 +32,10 @@ class App(capp.CApp):
 
     def on_init(self):
         capp.CApp.on_init(self)
+
+        pg.mixer.music.load(os.path.join("music","wog_music.mp3"))
+        pg.mixer.music.play()
+
         [balls.newBall(self.screen).appendTo(self.entities) for i in range(N)]
         [grub.newGrub(self.screen).appendTo(self.entities) for i in range(N)]
 
@@ -62,9 +67,16 @@ class App(capp.CApp):
             text = font.render("Scores : "+str(self.score), 1, pg.Color("#FFFFFF"))
             self.screen.blit(text, (10, 10))
         elif self.state == STATE_END:
+
             font = pg.font.SysFont('comicsansms', 72)
-            text = font.render("Congratulations! Your score is :" + str(self.score), 1, pg.Color("#FFFFFF"))
-            self.screen.blit(text, (10 ,self.screen.get_height()//2 ))
+            text = font.render("Congratulations!", 1, pg.Color("#FFFFFF"))
+
+            self.screen.blit(text, ((self.screen.get_width() - text.get_width()) // 2, self.screen.get_height() // 2 - 36))
+
+            font = pg.font.SysFont('comicsansms', 72)
+            text = font.render("Your score is :" + str(self.score), 1, pg.Color("#FFFFFF"))
+
+            self.screen.blit(text, ((self.screen.get_width() - text.get_width())//2 , self.screen.get_height()//2 + 36))
         pg.display.update()
 
     def on_loop(self):
@@ -72,12 +84,12 @@ class App(capp.CApp):
             for entity in self.entities:
                 entity.update()
 
-            if (pg.time.get_ticks()-self.lastClickTime) % 10000 > 5000:
+            if (pg.time.get_ticks()-self.lastClickTime) % 5000 > 2500:
                 for entity in self.entities:
                     if entity.__class__ != badball.BadBall:
                         return
-            if len(self.entities) > 0:
                 self.state = STATE_END
+
         elif self.state == STATE_END:
             pass
 

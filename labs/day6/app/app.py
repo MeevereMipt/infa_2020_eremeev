@@ -6,6 +6,9 @@ class CApp(cevent.CEvent):
 
     def __init__(self):
         cevent.CEvent.__init__(self)
+
+        pygame.mixer.init()
+
         self.clock = pygame.time.Clock()
         self._running = True
 
