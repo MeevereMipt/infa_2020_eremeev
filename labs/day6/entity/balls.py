@@ -2,6 +2,7 @@
 import numpy as np
 import pygame as pg
 from random import randint
+import os
 
 #My "bicycles"
 from labs.day6.particles import Particle, vector, magnitude
@@ -16,8 +17,17 @@ CYAN = "#00FFFF"
 BLACK = "#000000"
 COLORS = [RED, BLUE, YELLOW, GREEN, MAGENTA, CYAN]
 
+pg.mixer.init()
 
 class Ball(Particle, Entity):
+
+    death_sounds = [
+        pg.mixer.Sound(os.path.join("music","sounds","death1.ogg")),
+        pg.mixer.Sound(os.path.join("music","sounds","death2.ogg")),
+        pg.mixer.Sound(os.path.join("music","sounds","death3.ogg")),
+        pg.mixer.Sound(os.path.join("music","sounds","death4.ogg")),
+        pg.mixer.Sound(os.path.join("music","sounds","death5.ogg")),
+    ]
 
     def __init__(self, r=vector(0, 0), radius=1, color=pg.Color("#FFFFFF"), v=vector(0, 0)):
         Particle.__init__(self, r, v)
@@ -35,6 +45,7 @@ class Ball(Particle, Entity):
         return False
 
     def on_click(self, event):
+        self.death_sounds[randint(0,4)].play()
         self.removeFromAll()
 
 

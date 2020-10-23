@@ -1,6 +1,7 @@
 import numpy as np
 import pygame as pg
 from random import randint, random
+import os
 
 from labs.day6.particles import Particle, vector, magnitude
 from labs.day6.entity.entity import Entity
@@ -10,6 +11,14 @@ from labs.day6.entity.badball import BadBall
 
 
 class Grub(Particle, Entity):
+
+    death_sounds = [
+        pg.mixer.Sound(os.path.join("music", "sounds", "death1.ogg")),
+        pg.mixer.Sound(os.path.join("music", "sounds", "death2.ogg")),
+        pg.mixer.Sound(os.path.join("music", "sounds", "death3.ogg")),
+        pg.mixer.Sound(os.path.join("music", "sounds", "death4.ogg")),
+        pg.mixer.Sound(os.path.join("music", "sounds", "death5.ogg")),
+    ]
 
     def __init__(self, pos=vector(0,0), radius=1, color=pg.Color("#FFFFFF"), vel=vector(0,0)):
         Particle.__init__(self, pos, vel)
@@ -46,6 +55,8 @@ class Grub(Particle, Entity):
         for array in self.arrays:
             for ball in balls:
                 ball.appendTo(array)
+
+        self.death_sounds[randint(0, 4)].play()
         self.removeFromAll()
 
 
