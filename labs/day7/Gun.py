@@ -18,7 +18,8 @@ class Gun():
         self.cartridge = CartridgeBall(canvas)
 
     def fire2_start(self, event):
-        self.f2_on = True
+        if not self.cartridge.recharging:
+            self.f2_on = True
 
     def fire2_end(self, event):
         """Выстрел мячом.
@@ -28,16 +29,14 @@ class Gun():
         """
 
         new_ball = self.cartridge.takeAmmo()
-        print(self.cartridge.ammo)
         if new_ball is not None:
             self.angle = math.atan((event.y-new_ball.y) / (event.x-new_ball.x))
             new_ball.vx = self.f2_power * math.cos(self.angle)
             new_ball.vy = - self.f2_power * math.sin(self.angle)
+            self.bulletCount += 1
 
         self.f2_on = False
         self.f2_power = 10
-
-        self.bulletCount = self.cartridge.ammo
 
         return new_ball
 
