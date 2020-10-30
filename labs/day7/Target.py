@@ -6,6 +6,8 @@ from labs.day7.Ball import Ball
 
 class Target():
 
+    BORDERS = Ball.BORDERS
+
     def __init__(self, canvas : tk.Canvas):
         self.points = 0
         self.live = True
@@ -18,6 +20,8 @@ class Target():
         """ Инициализация новой цели. """
         x = self.x = rnd(600, 780)
         y = self.y = rnd(300, 550)
+        self.vx = 0
+        self.vy = rnd(-10,10)
         r = self.r = rnd(2, 50)
         color = self.color = 'red'
         self.canvas.coords(self.id, x-r, y-r, x+r, y+r)
@@ -45,3 +49,32 @@ class Target():
         self.canvas.itemconfig(self.id_points, text=self.points)
 
         self.live = False
+
+    def draw(self):
+        if self.live:
+            self.canvas.coords(
+                self.id,
+                self.x - self.r,
+                self.y - self.r,
+                self.x + self.r,
+                self.y + self.r
+            )
+
+    def move(self):
+        """Переместить мяч по прошествии единицы времени.
+
+        Метод описывает перемещение мяча за один кадр перерисовки. То есть, обновляет значения
+        self.x и self.y с учетом скоростей self.vx и self.vy, силы гравитации, действующей на мяч,
+        и стен по краям окна (размер окна 800х600).
+        """
+        self.x += self.vx
+        self.y -= self.vy
+
+        if self.x < self.BORDERS[0][0] and self.vx < 0:
+            self.vx = abs(self.vx)
+        if self.x > self.BORDERS[1][0] and self.vx > 0:
+            self.vx = -abs(self.vx)
+        if self.y < self.BORDERS[0][1] and self.vy > 0:
+            self.vy = -abs(self.vy)
+        if self.y > self.BORDERS[1][1] and self.vy < 0:
+            self.vy = abs(self.vy)

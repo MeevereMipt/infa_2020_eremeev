@@ -3,11 +3,11 @@ import math
 
 class Cartridge:
 
-    size = 3
+    size = 5
     fullRechargeTime = 100
     ammoType = object
 
-    bodySize = (30,10)
+    bodySize = (40,10)
 
     def __init__(self, canvas : tk.Canvas):
         self.recharging = False
@@ -38,19 +38,26 @@ class Cartridge:
                 fill="#0f0"
             ))
 
+        self.canvas = canvas
+
     def takeAmmo(self):
-        if not(self.recharging) and self.ammo <= 0:
+        if self.recharging or self.ammo <= 0:
             return None
         self.ammo -= 1
+        self.canvas.itemconfig(self.ammoRect[self.ammo], fill='red')
+
         return self.ammoType()
 
-    def do_recharge(self):
+    def do_recharge(self, event=None):
         self.recharging = True
         self.rechargeTime = self.fullRechargeTime/self.size*self.ammo
 
     def recharge(self):
-        if self.rechargeTime < self.fullRechargeTime:
-            self.rechargeTime += 1
-            self.ammo = round(self.rechargeTime/self.fullRechargeTime*self.size)
-        else:
-            self.recharging = False
+        if self.recharging:
+            if self.rechargeTime < self.fullRechargeTime:
+                self.rechargeTime += 1
+                self.ammo = round(self.rechargeTime/self.fullRechargeTime*self.size)
+                if self.ammo >= 1:
+                    self.canvas.itemconfig(self.ammoRect[self.ammo-1], fill="#0f0")
+            else:
+                self.recharging = False
