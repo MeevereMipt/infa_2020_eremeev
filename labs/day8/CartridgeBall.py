@@ -1,5 +1,5 @@
-from labs.day7.Cartridge import Cartridge
-from labs.day7.Ball import Ball
+from labs.day8.Cartridge import Cartridge
+from labs.day8.Ball import Ball
 
 class CartridgeBall(Cartridge):
 

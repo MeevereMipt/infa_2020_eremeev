@@ -2,7 +2,7 @@ from random import randrange as rnd, choice
 import tkinter as tk
 import math
 
-from labs.day7.CartridgeBall import CartridgeBall
+from labs.day8.CartridgeBall import CartridgeBall
 
 class Gun():
 

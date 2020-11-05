@@ -1,36 +1,91 @@
-import labs.day8.lsystem as lsys
-import labs.day8.draw as draw
+from random import randrange as rnd, choice
+import tkinter as tk
+import math
+import time
 
-# lsys_rule = {
-#     "1": "11",
-#     "0": "1[0]0"
-# }
-#
-# draw_rule = {
-#     "1": draw.one_rule,
-#     "0": draw.zero_rule,
-#     "[": draw.left_bracket_rule,
-#     "]": draw.right_bracket_rule,
-# }
+from labs.day8.Ball import Ball, checkBalls
+from labs.day8.Gun import Gun
+from labs.day8.Target import Target
 
-lsys_rule = {
-    "F": "F-G+F+G-F",
-    "G": "GG"
-}
+# print (dir(math))
 
-draw_rule = {
-    "F": draw.one_rule,
-    "G": draw.one_rule,
-    "-": draw.left_bracket_rule,
-    "+": draw.right_bracket_rule,
-}
+BORDERS = [
+    (0, 0), (800, 600)
+]
 
-draw.tl.penup()
-draw.tl.goto(-200,-200)
-draw.tl.pendown()
+Ball.BORDERS = BORDERS
+Target.BORDERS = BORDERS
 
-sys = lsys.LSystem("FG-+", "F-G-G", lsys_rule)
-sys.revolveN(8)
-draw.draw(sys.getSequence(), draw_rule)
+root = tk.Tk()
+fr = tk.Frame(root)
+root.geometry('800x600')
+canvas = tk.Canvas(root, bg='white')
+canvas.pack(fill=tk.BOTH, expand=1)
 
-draw.t.exitonclick()
+
+g1 = Gun(canvas)
+
+screen1 = canvas.create_text(400, 300, text='', font='28')
+
+targets = [Target(canvas), Target(canvas)]
+balls = []
+
+def checkTargets():
+    result = False
+    for t in targets:
+        result = result or t.live
+    return result
+
+
+def fireGun(event):
+    ball = g1.fire2_end(event)
+    if ball is not None:
+        balls.append(ball)
+
+def newGame(event=''):
+    # global g1, t1, screen1, balls
+    print("New Game!")
+
+    for t in targets:
+        t.new_target()
+
+    canvas.bind('<Button-1>', g1.fire2_start)
+    canvas.bind('<ButtonRelease-1>', fireGun)
+    canvas.bind('<Motion>', g1.targeting)
+    canvas.bind('<Button-3>', g1.cartridge.do_recharge)
+
+    while balls or checkTargets():
+        for b in balls:
+            b.move()
+            b.draw(canvas)
+
+            for t in targets:
+                if t.is_inside(b) and t.live:
+                    t.hit()
+
+        for t in targets:
+            t.move()
+            t.draw()
+
+        if not checkTargets():
+            canvas.bind('<Button-1>', '')
+            canvas.bind('<ButtonRelease-1>', '')
+            canvas.itemconfig(screen1, text='Вы уничтожили цель за ' + str(g1.bulletCount) + ' выстрелов')
+
+        canvas.update()
+        time.sleep(0.03)
+        g1.cartridge.recharge()
+        g1.targeting()
+        g1.power_up()
+
+        checkBalls(balls, canvas)
+
+    g1.bulletCount = 0
+    canvas.itemconfig(screen1, text='')
+    # canvas.delete(gun)
+    root.after(750, newGame())
+
+
+newGame()
+
+root.mainloop()
