@@ -3,9 +3,9 @@ import labs.day9.draw as draw
 
 lsys_rule = lsys.Rule({
     "1": [
-        ["1",0.5],
-        ["11",0.4],
-        ["11111",0.05],
+        ["11",0.8],
+        ["1",0.08],
+        ["111",0.008],
         ["",-1]
     ],
     "0": "1[0]0"
@@ -36,7 +36,7 @@ draw_rule = {
 #     "+": draw.plus_rule,
 # }
 
-for i in range(-400, 400, 200):
+for i in range(-400, 400, 300):
 
     draw.tl.penup()
     draw.tl.goto(i,-200)

@@ -3,9 +3,9 @@ from pygame.draw import *
 
 import numpy as np
 
-from lab4.sprites import Model, Animation
-from lab4.goat import Goat
-from lab4.goatAnimation import GoatAnimation
+from labs.day5.sprites import Model, Animation
+from labs.day5.goat import Goat
+from labs.day5.goatAnimation import GoatAnimation
 
 
 def drawParabola(surface: pg.Surface, color: pg.Color, r0: tuple, r1: tuple, f: lambda x: x):

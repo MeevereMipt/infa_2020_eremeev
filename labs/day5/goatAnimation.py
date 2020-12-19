@@ -2,8 +2,8 @@ import pygame as pg
 import numpy as np
 import os
 
-from lab4.sprites import Model, Animation
-from lab4.goat import Goat, GoatFrontRightLeg, GoatFrontLeftLeg, GoatBackRightLeg, GoatBackLeftLeg
+from labs.day5.sprites import Model, Animation
+from labs.day5.goat import Goat, GoatFrontRightLeg, GoatFrontLeftLeg, GoatBackRightLeg, GoatBackLeftLeg
 
 class GoatAnimation(Animation):
 

@@ -2,7 +2,7 @@ import pygame as pg
 import numpy as np
 import os
 
-from lab4.sprites import Model, Animation
+from labs.day5.sprites import Model, Animation
 
 
 class GoatFrontRightLeg(Model):
